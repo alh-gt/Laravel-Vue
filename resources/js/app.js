@@ -21,10 +21,7 @@ window.Vue = require('vue');
 
 Vue.component('app-main', require('./components/MainComponent.vue').default);
 Vue.component('app-content', require('./components/ContentComponent.vue').default);
-Vue.component('app-cs-content', require('./components/CSComponent.vue').default);
-Vue.component('app-php-content', require('./components/PHPComponent.vue').default);
-Vue.component('app-python-content', require('./components/PythonComponent.vue').default);
-Vue.component('app-empty-content', require('./components/EmptyComponent.vue').default);
+Vue.component('app-language', require('./components/LanguageComponent.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

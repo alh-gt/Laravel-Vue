@@ -20,7 +20,14 @@ Route::get('/welcome', function () {
     return view('welcome');
 });
 
-Route::get('/portal', [App\Http\Controllers\PortalController::class, 'index'])->name('portal');
+Route::group(['middleware' => ['web']], function () {
+    Route::get('/portal', [App\Http\Controllers\PortalController::class, 'index'])->name('portal');
+    Route::get('/lang',[App\Http\Controllers\ComputerLanguageController::class, 'index'])->name('lang');
+    Route::get('/lang/{id}',[App\Http\Controllers\ComputerLanguageController::class, 'show'])->name('lang');
+    Route::post('/lang',[App\Http\Controllers\ComputerLanguageController::class, 'store'])->name('lang');
+    Route::put('/lang/{id}',[App\Http\Controllers\ComputerLanguageController::class, 'update'])->name('lang');
+    Route::delete('/lang/{id}',[App\Http\Controllers\ComputerLanguageController::class, 'destroy'])->name('lang');
+});
 
 // Route::get('/portal', function () {
 //     return view('portal');

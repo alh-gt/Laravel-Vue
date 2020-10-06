@@ -2,11 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreComputerLanguage;
 use App\Models\ComputerLanguage;
 use Illuminate\Http\Request;
 
 class ComputerLanguageController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -27,9 +32,13 @@ class ComputerLanguageController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreComputerLanguage $request)
     {
-        //
+        $lang = ComputerLanguage::create($request->all());
+        return response()->json([
+            'message' => 'Register Successfully',
+            'data' => $lang
+        ], 201, [], JSON_UNESCAPED_UNICODE);
     }
 
     /**
@@ -38,9 +47,9 @@ class ComputerLanguageController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($name)
+    public function show($id)
     {
-        $lang = ComputerLanguage::where('name', $name)->first();
+        $lang = ComputerLanguage::find($id);
         if ($lang) {
             return response()->json([
                 'message' => 'ok',
@@ -60,9 +69,22 @@ class ComputerLanguageController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(StoreComputerLanguage $request, $id)
     {
-        //
+        $update = [
+            'name' => $request->name,
+            'description' => $request->description
+        ];
+        $lang = ComputerLanguage::where('id', $id)->update($update);
+        if ($lang) {
+            return response()->json([
+                'message' => 'Language updated successfully',
+            ], 200);
+        } else {
+            return response()->json([
+                'message' => 'Language not found',
+            ], 404);
+        }
     }
 
     /**
@@ -73,6 +95,15 @@ class ComputerLanguageController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $lang = ComputerLanguage::where('id', $id)->delete();
+        if ($lang) {
+            return response()->json([
+                'message' => 'Language deleted successfully',
+            ], 200);
+        } else {
+            return response()->json([
+                'message' => 'Language not found',
+            ], 404);
+        }
     }
 }

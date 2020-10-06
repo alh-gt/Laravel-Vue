@@ -5,16 +5,21 @@
             <div class="container">
                 <div class="card">
                     <div class="card-body side-list">
-                        <p @click="changeComponent('C#', $event)">C#</p>
-                        <p @click="changeComponent('php', $event)">php</p>
-                        <p @click="changeComponent('Python', $event)">Python</p>
+                        <p v-for="lang in languages" :key="lang.id" @click="changeLanguage(lang.id)">{{ lang.name }}</p>
+                        <p @click="changeMode('add')">追加 ＋</p>
                     </div>
                 </div>
             </div>
         </div>
         <!-- Content Panel -->
         <div class="col-sm-9">
-            <component v-bind:is="currentComponent"></component>
+                <app-language
+                    key="langId"
+                    :langId="langId"
+                    :mode="mode"
+                    :changeMode="changeMode"
+                    :resetLangId="resetLangId"
+                    @success="addSuccess"></app-language>
         </div>
 
     </div>
@@ -25,36 +30,43 @@
     export default {
         mounted() {
             console.log('Contents Component mounted.')
+            this.getLanguage()
         },
         data() {
             return {
-                lang: ''
-            }
-        },
-        computed: {
-            currentComponent() {
-                let lang = this.lang
-                let componentList = this.componentList
-                let componentName = ""
-                if(lang in componentList) {
-                    componentName = componentList[lang]
-                } else {
-                    componentName = 'app-empty-content'
-                }
-                return componentName
-            },
-            componentList: () => {
-                return {
-                    'C#': 'app-cs-content',
-                    'php': 'app-php-content',
-                    'Python': 'app-python-content'
-                }
+                lang: '',
+                languages: [],
+                langId: 0,
+                mode: 'read'
             }
         },
         methods: {
-            changeComponent(arg) {
-                this.lang = arg
+            getLanguage() {
+                axios.get("/lang").then(
+                    (response) => {
+                        this.languages = response.data.data
+                    }
+                )
+            },
+            changeMode(mode) {
+                this.mode = mode;
+            },
+            changeLanguage(arg) {
+                this.langId = parseInt(arg)
+                this.changeMode('read')
+            },
+            addSuccess(langId) {
+                this.getLanguage()
+                this.langId = langId
+                this.isEdit = false
+            },
+            editClicked() {
+                this.isEdit = true
+            },
+            resetLangId() {
+                this.langId = 0
+                this.getLanguage()
             }
-        }
+        },
     }
 </script>

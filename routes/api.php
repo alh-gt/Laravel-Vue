@@ -14,8 +14,21 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+Route::group(['prefix' => 'api'], function() {
+
+    Route::group([], function() {
+        // Public Routes Here
+    });
+
+    Route::group(['middleware' => 'auth'], function() {
+        // Private Routes Here
+        // Route::middleware('auth:api')->get('/user', function (Request $request) {
+        //     return $request->user();
+        // });
+        // Route::middleware('auth:api')->get('/lang', function (Request $request) {
+        //     return $request->user();
+        // });
+    });
 });
 
-Route::apiResource('/lang', 'App\Http\Controllers\ComputerLanguageController');
+// Route::apiResource('/lang', 'App\Http\Controllers\ComputerLanguageController');

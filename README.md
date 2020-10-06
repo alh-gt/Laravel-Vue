@@ -36,6 +36,8 @@
     デフォルトのemailだけではなく自前で追加したlogin_idでもログイン可能とする場合
  * /app/Http/Controllers/*Controller  
    デフォルトで作成されるHomeControllerを修正するのがいいかも
+ * /app/Http/Controllers/Auth/LoginController.php
+   デフォルトのemail以外で認証するならこのクラスにusernameメソッドを追加して戻り値を修正する。
  * /app/Providers/UserProvider/*Provider.php  
    認証情報などから該当するユーザーを探したりするクラス
  * /app/Providers/AppServiceProvider.php  
@@ -44,8 +46,6 @@
    ログイン後に遷移するページの設定ができる
  * /config/auth.php  
    使用するプロバイダーを設定できる
- * /vendor/laravel/ui/auth-backend/* AuthenticatesUsers.php  
-   デフォルトのemail以外で認証するならこのクラスのusernameメソッドを修正する。
  * /resources/views/*.blade.php  
    ログイン後に表示する画面などのテンプレート
  * /resources/views/auth/*.blade.php  

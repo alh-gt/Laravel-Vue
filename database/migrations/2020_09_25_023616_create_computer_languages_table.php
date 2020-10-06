@@ -16,7 +16,7 @@ class CreateComputerLanguagesTable extends Migration
         Schema::create('computer_languages', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('description');
+            $table->string('description',4096);
             $table->timestamps();
         });
     }
